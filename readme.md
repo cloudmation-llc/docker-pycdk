@@ -1,6 +1,8 @@
 # CDK Python Docker Image
 
-## Setup
+To be developed.
+
+<!-- ## Setup
 
 ### Bash Profile Script
 
@@ -84,4 +86,4 @@ $ cd docker-pycdk
 $ docker build . -t cumulusmike/pycdk:1.86.0 -t cumulusmike/pycdk:latest --build-arg CDK_VERSION=1.86.0
 $ docker push cumulusmike/pycdk:1.86.0
 $ docker push cumulusmike/pycdk:latest
-```
+``` -->
