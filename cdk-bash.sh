@@ -10,7 +10,7 @@ function aws {
 }
 
 function cdk {
-    docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/proj $PYCDK_IMAGE_PREFIX:active cdk $*
+    docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/proj ${PYCDK_IMAGE_PREFIX}:active cdk $*
 }
 
 function pycdk {
@@ -29,7 +29,7 @@ function pycdk_add_packages {
     docker run --rm -it \
         -v ~/.aws:/root/.aws \
         -v $(pwd):/proj \
-        $PYCDK_IMAGE_PREFIX:active \
+        ${PYCDK_IMAGE_PREFIX}:active \
         pip install --target .pycdk-local $*
 }
 
@@ -37,12 +37,12 @@ function pycdk_set_version {
     echo "Setting active version to $1"
 
     # Pull the image from the repository if it does not exist locally
-    docker inspect --format='{{.Id}}' $PYCDK_IMAGE_PREFIX:$1
+    docker inspect --format='{{.Id}}' ${PYCDK_IMAGE_PREFIX}:$1
     if [ $? -eq 1 ]; then
         echo "pycdk: Fetching image for version $1"
-        docker pull $PYCDK_IMAGE_PREFIX:$1
+        docker pull ${PYCDK_IMAGE_PREFIX}:$1
     fi
 
     # Apply the 'active' tag to the selected image
-    docker tag $PYCDK_IMAGE_PREFIX:$1 $PYCDK_IMAGE_PREFIX:active
+    docker tag ${PYCDK_IMAGE_PREFIX}:$1 ${PYCDK_IMAGE_PREFIX}:active
 }
