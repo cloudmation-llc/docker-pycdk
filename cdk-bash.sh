@@ -6,11 +6,11 @@
 PYCDK_IMAGE_PREFIX=docker.pkg.github.com/cloudmation-llc/docker-pycdk/pycdk
 
 function aws {
-    docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli $*
+    docker run --rm -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli $*
 }
 
 function cdk {
-    docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/proj ${PYCDK_IMAGE_PREFIX}:active cdk $*
+    docker run --rm -v ~/.aws:/root/.aws -v $(pwd):/proj ${PYCDK_IMAGE_PREFIX}:active cdk $*
 }
 
 function pycdk {
