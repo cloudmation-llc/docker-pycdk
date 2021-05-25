@@ -4,7 +4,7 @@ FROM alpine:3.13
 LABEL maintainer="matt@cloudmation.io mike@cumulustech.us"
 
 # Set build args with defaults
-ARG CDK_VERSION=1.100.0
+ARG CDK_VERSION=1.105.0
 
 # Setup
 RUN mkdir /proj
