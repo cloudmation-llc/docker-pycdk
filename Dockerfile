@@ -25,7 +25,7 @@ RUN python3 -m pip install --upgrade pip
 RUN pip install beautifulsoup4 cryptography requests poetry
 
 # Set PYTHONPATH to support local/project specific packages
-ENV PYTHONPATH="/proj/.pycdk-local"
+ENV PYTHONPATH="/proj/.pycdk-local:/project/.venv/lib"
 
 # Query PyPI registry for all installable CDK modules
 # (@Feb-22-2021 MR - I would like to replace this in the future with CDK monorepo -- too experimental right now)
