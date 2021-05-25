@@ -10,27 +10,48 @@ function aws {
 }
 
 function cdk {
-    docker run --rm -v ~/.aws:/root/.aws -v $(pwd):/proj ${PYCDK_IMAGE_PREFIX}:active cdk $*
+    # Build initial Docker command
+    DOCKER_CMD=(run --rm -v ~/.aws:/root/.aws -v $(pwd):/proj -e TERM=xterm-256color)
+
+    # Check for and additional extra args provided at runtime
+    if [ -n "${DOCKER_PYCDK_EXTRA_ARGS}" ]; then
+        DOCKER_CMD+=($(eval echo $DOCKER_PYCDK_EXTRA_ARGS))
+    fi
+
+    # Finish assembling CDK command
+    DOCKER_CMD+=(${PYCDK_IMAGE_PREFIX}:active cdk $*)
+
+    # Run container instance
+    docker ${DOCKER_CMD[@]}
 }
 
 function pycdk {
     # Evaluate command
     if [ "$1" = "add-packages" ]; then
         pycdk_add_packages ${@:2}
-    elif [ "$1" = "version" ]; then
+    elif [ "$1" = "set-cdk-version" ] || [ "$1" = "active" ]; then
         pycdk_set_version $2
     else
-       echo "pycdk: error: $1 is not a known command"
+       echo "pycdk: error: \"$1\" is not a known command"
     fi
 }
 
 function pycdk_add_packages {
     echo "pycdk: Installing package(s) $*"
-    docker run --rm -it \
-        -v ~/.aws:/root/.aws \
-        -v $(pwd):/proj \
-        ${PYCDK_IMAGE_PREFIX}:active \
-        pip install --target .pycdk-local $*
+
+    # Build initial Docker command
+    DOCKER_CMD=(run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/proj -e TERM=xterm-256color)
+
+    # Check for and additional extra args provided at runtime
+    if [ -n "${DOCKER_PYCDK_EXTRA_ARGS}" ]; then
+        DOCKER_CMD+=($(eval echo $DOCKER_PYCDK_EXTRA_ARGS))
+    fi
+
+    # Finish assembling pip command
+    DOCKER_CMD+=(${PYCDK_IMAGE_PREFIX}:active pip install --target /proj/.pycdk-local $*)
+
+    # Run container instance
+    docker ${DOCKER_CMD[@]}
 }
 
 function pycdk_set_version {
