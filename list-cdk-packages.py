@@ -19,6 +19,11 @@ print(' ... done', file=sys.stderr)
 # Regex pattern for parsing package URLs
 pattern = '/simple/aws-cdk-(?P<package>.*)/'
 
+# Packages to ignore
+ignored_packages = [
+    'aws-quickstarts', # Does not track CDK core
+]
+
 # Iterate <a> elements that link to packages
 for package_link in soup.find_all('a'):
     url = package_link.get('href')
@@ -38,10 +43,9 @@ for package_link in soup.find_all('a'):
         if package_name.endswith('-api'):
             continue
 
-        # Ignore selected packages that are not tracking CDK core
-        if package_name in ['aws-quickstarts']:
+        # Ignore selected packages
+        if package_name in ignored_packages:
             continue
 
         # Print out package spec suitable for Pip
         print(f"aws-cdk.{matches.group('package')}=={sys.argv[1]}", end=' ')
-    
