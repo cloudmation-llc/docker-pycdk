@@ -39,8 +39,8 @@ RUN pip install `cat cdk-package-list` > pip-install.log
 # AWS CDK, AWS SDK, and Matt's CDK SSO Plugin https://www.npmjs.com/package/cdk-cross-account-plugin
 RUN npm i -g aws-cdk@${CDK_VERSION} aws-sdk cdk-cross-account-plugin
 
-# Set PYTHONPATH to support local/project specific packages
-ENV PYTHONPATH="/proj/.pycdk-local"
+# Set PYTHONPATH to support local and project specific packages
+ENV PYTHONPATH="/proj/.pycdk-local:/proj"
 
 # Set default run command
 CMD ["/bin/bash"]
