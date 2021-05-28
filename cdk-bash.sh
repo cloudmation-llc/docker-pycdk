@@ -6,7 +6,29 @@
 PYCDK_IMAGE_PREFIX=docker.pkg.github.com/cloudmation-llc/docker-pycdk/pycdk
 
 function aws {
-    docker run --rm -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli $*
+    # Build initial Docker command
+    DOCKER_CMD=(run --rm -v ~/.aws:/root/.aws -v $(pwd):/aws)
+
+    # If AWS_ACCESS_KEY_ID is set, pass into container
+    if [ -n "${AWS_ACCESS_KEY_ID}" ]; then
+        DOCKER_CMD+=(-e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID)
+    fi
+
+    # If AWS_SECRET_ACCESS_KEY is set, pass into container
+    if [ -n "${AWS_SECRET_ACCESS_KEY}" ]; then
+        DOCKER_CMD+=(-e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY)
+    fi
+
+    # If AWS_SESSION_TOKEN is set, pass into container
+    if [ -n "${AWS_SESSION_TOKEN}" ]; then
+        DOCKER_CMD+=(-e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN)
+    fi
+
+    # Finish assembling AWS command
+    DOCKER_CMD+=(amazon/aws-cli $*)
+
+    # Run container instance
+    docker ${DOCKER_CMD[@]}
 }
 
 function cdk {
