@@ -5,7 +5,7 @@ FROM python:3.9-alpine
 ARG CDK_VERSION=1.108.1
 RUN pip install beautifulsoup4 requests
 COPY list-cdk-packages.py .
-RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-package-list
+RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
 
 #
 # Multi-stage step 2: Build pycdk image
@@ -33,8 +33,8 @@ RUN apk -U --no-cache add \
 RUN pip install poetry
 
 # Install CDK modules
-COPY --from=0 cdk-package-list .
-RUN pip install `cat cdk-package-list` > pip-install.log
+COPY --from=0 cdk-requirements.txt .
+RUN pip install -r cdk-requirements.txt > pip-install.log
 
 # AWS CDK, AWS SDK, and Matt's CDK SSO Plugin https://www.npmjs.com/package/cdk-cross-account-plugin
 RUN npm i -g aws-cdk@${CDK_VERSION} aws-sdk cdk-cross-account-plugin
