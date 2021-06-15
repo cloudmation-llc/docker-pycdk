@@ -25,6 +25,10 @@ RUN apt-get update && apt-get install -y curl &&\
     git clone git://github.com/inishchith/autoenv.git $HOME/.autoenv &&\
     echo 'source $HOME/.autoenv/activate.sh' > $HOME/.bashrc
 
+# Install img (https://github.com/genuinetools/img)
+RUN curl -L -o /usr/local/bin/img https://github.com/genuinetools/img/releases/download/v0.5.11/img-linux-amd64 &&\
+    chmod +x /usr/local/bin/img
+
 # Install latest AWS CLI v2
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" &&\
     unzip awscliv2.zip &&\
