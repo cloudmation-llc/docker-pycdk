@@ -24,7 +24,7 @@ There are so many things to install -- plus add in personal preferences for diff
 
 The end result of this project is a **portable** and **consistent** CDK development environment that works on Mac, Linux, or Windows -- or in other words anywhere you can set up operational Docker environment.
 
-As you can see in the project name this specific project has bias to developing CDK projects using Python.
+As you can see in the project name we are developing CDK projects using Python as our preferred choice.
 
 ## Usage
 
