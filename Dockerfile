@@ -10,20 +10,18 @@ RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
 #
 # Multi-stage step 2: Build pycdk image
 #
-FROM amazonlinux:2
+FROM ubuntu:focal
 ARG CDK_VERSION=1.108.1
 
 # Set image labels
 LABEL maintainer="matt@cloudmation.io mike@cumulustech.us"
 
-# Install OS packages
-RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash - &&\
-    amazon-linux-extras enable python3.8 &&\
-    yum -y install git nodejs openssh python38 tar which unzip zip &&\
-    pip3.8 install pip --upgrade &&\
-    alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1 &&\
-    alternatives --install /usr/bin/pip3 pip3 /usr/local/bin/pip3 1 &&\
-    yum clean all &&\
+# Install OS packages (Ubuntu)
+RUN apt-get update && apt-get install -y curl &&\
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - &&\
+    apt-get update &&\
+    apt-get install -y --no-install-recommends git openssh-client nodejs python3 python3-pip unzip zip &&\
+    rm -rf /var/lib/apt/lists/* &&\
     git clone git://github.com/inishchith/autoenv.git $HOME/.autoenv &&\
     echo 'source $HOME/.autoenv/activate.sh' > $HOME/.bashrc
 
