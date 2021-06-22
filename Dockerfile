@@ -2,7 +2,7 @@
 # Multi-stage step 1: Query and generate list of Python packages specific AWS CDK version
 #
 FROM python:3.9-alpine
-ARG CDK_VERSION=1.108.1
+ARG CDK_VERSION=1.109.0
 RUN pip install beautifulsoup4 requests
 COPY list-cdk-packages.py .
 RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
@@ -11,7 +11,7 @@ RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
 # Multi-stage step 2: Build pycdk image
 #
 FROM ubuntu:focal
-ARG CDK_VERSION=1.108.1
+ARG CDK_VERSION=1.109.0
 
 # Set image labels
 LABEL maintainer="matt@cloudmation.io mike@cumulustech.us"
