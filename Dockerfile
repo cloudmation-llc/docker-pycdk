@@ -49,8 +49,5 @@ RUN curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zi
     ./aws/install &&\
     rm -Rf awscliv2.zip ./aws
 
-# Set PYTHONPATH to support local and project specific packages
-ENV PYTHONPATH="/proj/.pycdk-local:/proj"
-
 # Set default run command
 CMD ["/bin/bash"]
