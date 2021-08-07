@@ -11,7 +11,7 @@ RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
 # Multi-stage step 2: Build pycdk image
 #
 FROM ubuntu:focal
-ARG CDK_VERSION=1.109.0
+ARG CDK_VERSION=1.117.0
 
 # Set image labels
 LABEL maintainer="matt@cloudmation.io mike@cumulustech.us"
@@ -25,13 +25,15 @@ RUN apt-get update && apt-get install -y curl &&\
     git clone git://github.com/inishchith/autoenv.git $HOME/.autoenv &&\
     echo 'source $HOME/.autoenv/activate.sh' > $HOME/.bashrc
 
-# Install CDK modules
-# AWS CDK, AWS SDK, and Matt's CDK SSO Plugin https://www.npmjs.com/package/cdk-cross-account-plugin
-# Poetry
+# Install Python CDK modules
 COPY --from=0 cdk-requirements.txt .
-RUN pip3 install -r cdk-requirements.txt > pip-install.log &&\
-    npm i -g aws-cdk@${CDK_VERSION} aws-sdk cdk-cross-account-plugin &&\
-    pip3 install poetry
+RUN pip3 install -r cdk-requirements.txt > pip-install.log
+
+# AWS CDK, AWS SDK, and Matt's CDK SSO Plugin https://www.npmjs.com/package/cdk-cross-account-plugin
+RUN npm i -g aws-cdk@${CDK_VERSION} aws-sdk cdk-cross-account-plugin
+
+# Install Python libraries and tools: Bump2Version, Invoke, Poetry
+RUN pip3 install boto3 bump2version==1.0.1 invoke==1.6.0 poetry==1.1.7
 
 #
 # Install additional tools after here to avoid re-downloading CDK Python packages over and over
