@@ -10,8 +10,8 @@ RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
 #
 # Multi-stage step 2: Build pycdk image
 #
-FROM ubuntu:focal
-ARG CDK_VERSION=1.117.0
+FROM ubuntu:hirsute
+ARG CDK_VERSION=1.118.0
 
 # Set image labels
 LABEL maintainer="matt@cloudmation.io mike@cumulustech.us"
