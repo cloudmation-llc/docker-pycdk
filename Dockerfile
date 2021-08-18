@@ -33,7 +33,7 @@ RUN pip3 install -r cdk-requirements.txt > pip-install.log
 RUN npm i -g aws-cdk@${CDK_VERSION} aws-sdk cdk-cross-account-plugin
 
 # Install Python libraries and tools: Bump2Version, Invoke, Poetry
-RUN pip3 install boto3 bump2version==1.0.1 invoke==1.6.0 poetry==1.1.7
+RUN pip3 install boto3 bumpver==2021.1113 invoke==1.6.0 poetry==1.1.7
 
 #
 # Install additional tools after here to avoid re-downloading CDK Python packages over and over
