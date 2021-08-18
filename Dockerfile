@@ -2,7 +2,7 @@
 # Multi-stage step 1: Query and generate list of Python packages specific AWS CDK version
 #
 FROM python:3.9-alpine
-ARG CDK_VERSION=1.117.0
+ARG CDK_VERSION=1.118.0
 RUN pip install beautifulsoup4 requests
 COPY list-cdk-packages.py .
 RUN python list-cdk-packages.py ${CDK_VERSION} > cdk-requirements.txt
